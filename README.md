@@ -22,3 +22,6 @@ In this exercise your task is to optimise a GPU-based raytracer by using a diffe
 <center><img src="lab04/raytrace.png" width="663" height="437"></center>
 
 Analyse the code in [lab04/raytrace/raytrace.cu](lab04/raytrace/raytrace.cu) and change it so it stores some of the data in one of the memory types mentioned in this lab. Compare the performance of the original version with your optimised version.
+
+## Lab 05
+Let's see how overlapping memory transfers and kernel executions can improve the performance of CUDA applications. In [lab5/streams/single.cu](lab05/streams/single.cu) you can find the code described in section 2 (it uses a single non-default stream). Modify it so it uses 2 streams instead - each stream should handle half of all memory transfers and kernel executions. Compare the results from both versions using NVIDIA Nsight Systems.
