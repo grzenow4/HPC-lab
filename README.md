@@ -25,3 +25,10 @@ Analyse the code in [lab04/raytrace/raytrace.cu](lab04/raytrace/raytrace.cu) and
 
 ## Lab 05
 Let's see how overlapping memory transfers and kernel executions can improve the performance of CUDA applications. In [lab5/streams/single.cu](lab05/streams/single.cu) you can find the code described in section 2 (it uses a single non-default stream). Modify it so it uses 2 streams instead - each stream should handle half of all memory transfers and kernel executions. Compare the results from both versions using NVIDIA Nsight Systems.
+
+## Lab 06
+Download the [transpose.cu](lab06/transpose.cu) file. It contains an incorrect and suboptimal implementation of matrix transpose on the GPU. Your task is to use CUDA-GDB to localise any bugs and fix them. Hint: look for bugs in the kernel code. Then, you have to profile the application and find performance bottlenecks. Hint - shared memory may be used as a buffer to better organize global memory accesses. Optimise the code and profile it again.
+
+Image below shows how threads are assigned to the matrix elements:
+
+<center><img src="lab06/transpose.png" width="400" height="511"></center>
