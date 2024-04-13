@@ -32,3 +32,10 @@ Download the [transpose.cu](lab06/transpose.cu) file. It contains an incorrect a
 Image below shows how threads are assigned to the matrix elements:
 
 <center><img src="lab06/transpose.png" width="400" height="511"></center>
+
+## Lab 07
+1. Organize `n` processes into a ring: rank `0` sends to rank `1`, rank `1` sends to rank `2`, rank `n−1` sends to rank `0`. A message contains a single `int64` number. First message is `1`; then each process receives the number, multiplies it by its current rank and sends its to the next rank. Rank `0` prints the received message.
+
+1. Your goal is to compute the throughput (in MB/s) and the round-trip latency (in ms) on Okeanos and on the computers in our labs. For each, you should make `N` (e.g. 30) experiments, discard 1-2 minimal and maximal values and then average the remaining ones. For throughput, send large messages (millions of bytes); for latency, send short messages (1-10-100 bytes).
+
+    After completing this, extend your code to compute throughput in function of the length of the message. You can use our jupyter notebook [draw-bandwidth.ipynb](lab07/draw-bandwidth.ipynb) to display results (the data format is: `experiment_sequence_number message_size communication_time`).
