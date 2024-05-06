@@ -48,3 +48,9 @@ Image below shows how threads are assigned to the matrix elements:
 1. Implement the distributed Floyd-Warshall algorithm by completing fixmes in [floyd-warshall-par.cpp](lab08/floyd-warshall-par.cpp). You can use [floyd-warshall-seq.cpp](lab08/floyd-warshall-seq.cpp), a sequential implementation, as a template.
 
     Compute speed-ups (strong scaling) for different sizes of the graph and 1-16 nodes.
+
+## Lab 09
+1. Implement the first, working, distributed version by extending [laplace-par.cpp](lab09/laplace-par.cpp). You can either use synchronous, point-to-point communication or asynchronous communication. Compute speed-ups.
+1. Use `MPI_Allreduce` to test the termination condition of the main loop. Is the program significantly faster?
+1. Use asynchronous, point-to-point communication to overlap the computation of the "black" fields with the communication of the "white" borders (analogously for the second phase). (alternatively, if your implementation already uses asynchronous communication, reimplement it with synchronous communication). Does this communication-computation overlap make your program faster?
+1. (optional) As our algorithm has low computational intensity, one possible optimization is to communicate less frequently by computing redundant boundaries (communication-avoiding algorithm).
