@@ -54,3 +54,8 @@ Image below shows how threads are assigned to the matrix elements:
 1. Use `MPI_Allreduce` to test the termination condition of the main loop. Is the program significantly faster?
 1. Use asynchronous, point-to-point communication to overlap the computation of the "black" fields with the communication of the "white" borders (analogously for the second phase). (alternatively, if your implementation already uses asynchronous communication, reimplement it with synchronous communication). Does this communication-computation overlap make your program faster?
 1. (optional) As our algorithm has low computational intensity, one possible optimization is to communicate less frequently by computing redundant boundaries (communication-avoiding algorithm).
+
+## Lab 10
+1. Implement your own matrix-matrix multiplication as a function in [blas-dmmmult.cpp](lab10/blas-dmmmult.cpp). Benchmark both versions (use a single node). Try to optimize your implementation using compiler hints.
+1. Benchmark a distributed program (e.g., your homework from the previous lab) using `-tasks-per-node=24` (no hyperthreading) and `-tasks-per-node=48` (hyperthreading).
+1. Introduce some performance bugs to the Floyd-Warshall code, e.g. a rank that computes more than other ranks. See how it influences the `app2` profiling.
