@@ -59,3 +59,10 @@ Image below shows how threads are assigned to the matrix elements:
 1. Implement your own matrix-matrix multiplication as a function in [blas-dmmmult.cpp](lab10/blas-dmmmult.cpp). Benchmark both versions (use a single node). Try to optimize your implementation using compiler hints.
 1. Benchmark a distributed program (e.g., your homework from the previous lab) using `-tasks-per-node=24` (no hyperthreading) and `-tasks-per-node=48` (hyperthreading).
 1. Introduce some performance bugs to the Floyd-Warshall code, e.g. a rank that computes more than other ranks. See how it influences the `app2` profiling.
+
+## Lab 11
+Use task-based parallelism to implement a parallel version of the n-queens problem: how to place n queens on an n x n checkerboard so that no two queens attack each other. A sequential solution is in [nqueens.cpp](lab11/nqueens.cpp).
+- Extend the solution to a parallel version. Avoid the race condition when modifying `partial_board`.
+- Start with a version that only counts the number of possible solutions (instead of generating all of them).
+- Make sure you will get a decent speed-up compared to the sequential version (unlike our Fibonacci implementation). Think about the "grain size", or when to stop spawning new tasks.
+- To return all solutions in a thread-safe way, use `tbb::concurrent_queue<board>`. Measure the performance degradation compared with just counting the solutions.
