@@ -66,3 +66,8 @@ Use task-based parallelism to implement a parallel version of the n-queens probl
 - Start with a version that only counts the number of possible solutions (instead of generating all of them).
 - Make sure you will get a decent speed-up compared to the sequential version (unlike our Fibonacci implementation). Think about the "grain size", or when to stop spawning new tasks.
 - To return all solutions in a thread-safe way, use `tbb::concurrent_queue<board>`. Measure the performance degradation compared with just counting the solutions.
+
+## Lab 12
+1. Rewrite [nqueens.cpp](lab11/nqueens.cpp) from the previous lab to use `parallel_for_each`.
+1. Apply `enumerable_thread_specific` to [nqueens.cpp](lab11/nqueens.cpp).
+1. Solve the single source shortest path problem in a randomly-initialized graph. Use `tbb::concurrent_hash_map` (or `tbb::concurrent_unordered_map`) that maps a node to its distance from the source; and `tbb::concurrent_priority_queue` to keep a list of nodes to visit. See https://stackoverflow.com/questions/23501591/tbb-concurrent-hash-map-find-insert for example.

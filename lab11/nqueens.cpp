@@ -93,12 +93,35 @@ void parallel_solve(Board partial_board, int col, tbb::task_group& g, tbb::concu
 }
 
 
+void parallel_solve_2(Board partial_board, int col, tbb::enumerable_thread_specific<std::list<Board>>& solutions) {
+    std::pair<Board, int> init_p = {partial_board, col};
+    tbb::parallel_for_each(&init_p, &init_p + 1, [&solutions]
+                          (std::pair<Board, int> p, tbb::feeder<std::pair<Board, int>>& feeder) {
+            Board board = p.first;
+            int col = p.second;
+            int b_size = board.size();
+            if (col == b_size) {
+                solutions.local().push_back(board);
+            } else {
+                for (int tested_row = 0; tested_row < b_size; tested_row++) {
+                    board[col] = tested_row;
+                    if (check_col(board, col)) {
+                        feeder.add({board, col + 1});
+                    }
+                }
+            }
+        }
+    );
+}
+
+
 int main() {
     const int board_size = 13;
     Board board{};
     initialize(board, board_size);
     std::list<Board> solutions{};
     tbb::concurrent_queue<Board> par_solutions;
+    tbb::enumerable_thread_specific<std::list<Board>> par_solutions_2;
 
     tbb::tick_count seq_start_time = tbb::tick_count::now();
     recursive_solve(board, 0, solutions);
@@ -114,7 +137,29 @@ int main() {
     double par_time = (par_end_time - par_start_time).seconds();
     std::cout << "par time: " << par_time << "[s]" << std::endl;
 
+    tbb::tick_count par_start_time_2 = tbb::tick_count::now();
+    parallel_solve_2(board, 0, par_solutions_2);
+    tbb::tick_count par_end_time_2 = tbb::tick_count::now();
+    double par_time_2 = (par_end_time_2 - par_start_time_2).seconds();
+    std::cout << "par2 time: " << par_time_2 << "[s]" << std::endl;
+
+    size_t count = 0;
+    while (!par_solutions.empty()) {
+        Board solution;
+        if (par_solutions.try_pop(solution)) {
+            count++;
+        }
+    }
+
+    size_t count_2 = 0;
+    for (auto sol: par_solutions_2) {
+        count_2 += sol.size();
+    }
+
     std::cout << "solution count: " << solutions.size() << std::endl;
+    std::cout << "par solution count: " << count << std::endl;
+    std::cout << "par2 solution count: " << count_2 << std::endl;
+
     // for (const auto& sol : solutions) {
     //     pretty_print(sol);
     //     std::cout << std::endl;
